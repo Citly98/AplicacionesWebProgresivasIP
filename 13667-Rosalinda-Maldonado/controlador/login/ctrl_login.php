@@ -1,0 +1,27 @@
+<?php
+session_start();
+include("../../modelo/mdl_login.php");
+$obj = new class_login();//VARIABLE GLOBAL
+
+if(isset($_POST['usuario'])){  
+$usuario = $_POST['usuario'];//victor
+$contrasena = $_POST['contrasena'];//12345
+$query = "SELECT * FROM usuarios WHERE usuario_nombre='$usuario' AND usuario_contrsena='$contrasena'";
+// SELECT * FROM users WHERE email='$usuario' AND pass ='$contrasena
+$resultado = $obj -> login($query);
+if(empty($resultado)){
+    $mensaje = "USUARIO Y/O CONTRASEÑA INCORRECTOS";
+    exit(json_encode([
+        "status" => "2",
+        "mensaje" => $mensaje
+    ]));
+}else{
+    $mensaje = "Acceso a usuario correcto!!!";
+    $_SESSION['tipo_usuario'] = "alumno";
+    exit(json_encode([
+        "status" => "1",
+        "mensaje" => $mensaje 
+    ]));
+}
+}
+?>
